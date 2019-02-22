@@ -4,8 +4,6 @@ namespace Javer\SphinxBundle\Sphinx;
 
 use Doctrine\ORM\QueryBuilder;
 use Javer\SphinxBundle\Logger\SphinxLogger;
-use PDO;
-use PDOStatement;
 
 /**
  * Class Query
@@ -17,7 +15,7 @@ class Query
     protected const CONDITION_OPERATORS = ['=', '!=', '<', '>', '<=', '>=', 'IN', 'NOT IN', 'BETWEEN'];
 
     /**
-     * @var PDO
+     * @var mysqli
      */
     protected $connection;
 
@@ -119,11 +117,11 @@ class Query
     /**
      * Query constructor.
      *
-     * @param PDO          $connection
+     * @param mysqli       $connection
      * @param SphinxLogger $logger
      * @param string       $query
      */
-    public function __construct(PDO $connection, SphinxLogger $logger, string $query = null)
+    public function __construct(\mysqli $connection, SphinxLogger $logger, string $query = null)
     {
         $this->connection = $connection;
         $this->logger = $logger;
@@ -618,16 +616,17 @@ class Query
         $this->results = [];
         $this->numRows = 0;
 
-        $stmt = $this->createStatement($this->getQuery());
-
-        if ($stmt->execute()) {
-            if ($this->select) {
-                $this->results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            }
-            $this->numRows = $stmt->rowCount();
-
-            $stmt->closeCursor();
+        if (!$this->connection->multi_query($this->getQuery())) {
+            throw new \RuntimeException(sprintf('SphinxQL error: %s.', $this->connetion->error));
         }
+
+        do {
+            if ($result = $this->connection->store_result()) {
+                $this->results[] = $result->fetch_all(MYSQLI_ASSOC);
+                $this->numRows += $result->num_rows;
+                $result->free();
+            }
+        } while ($this->connection->more_results() && $this->connection->next_result());
 
         $endTime = microtime(true);
 
@@ -650,18 +649,6 @@ class Query
         }
 
         return $this->numRows;
-    }
-
-    /**
-     * Creates a new PDO statement.
-     *
-     * @param string $query
-     *
-     * @return PDOStatement
-     */
-    protected function createStatement(string $query): PDOStatement
-    {
-        return $this->connection->prepare($query);
     }
 
     /**
@@ -724,11 +711,11 @@ class Query
         }
 
         $this->metadata = [];
-        $stmt = $this->createStatement('SHOW META');
 
-        if ($stmt->execute()) {
-            $this->metadata = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
-            $stmt->closeCursor();
+        $result = $this->connection->query('SHOW META');
+        if ($result) {
+            $this->metadata = $result->fetch_all(MYSQLI_ASSOC);
+            $result->free();
         }
 
         return $this->metadata;

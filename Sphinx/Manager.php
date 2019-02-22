@@ -3,7 +3,6 @@
 namespace Javer\SphinxBundle\Sphinx;
 
 use Javer\SphinxBundle\Logger\SphinxLogger;
-use PDO;
 
 /**
  * Class Manager
@@ -49,14 +48,15 @@ class Manager
     /**
      * Returns an established connection to Sphinx server.
      *
-     * @return PDO
+     * @return mysqli
      */
-    protected function getConnection(): PDO
+    protected function getConnection(): \mysqli
     {
-        if (is_null($this->connection)) {
-            $this->connection = new PDO(sprintf('mysql:host=%s;port=%d', $this->host, $this->port));
-
-            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        if (null === $this->connection) {
+            $this->connection = new \mysqli($this->host, null, null, null, $this->port);
+            if ($this->connection->connect_error) {
+                throw new \RuntimeException(sprintf('SphinxQL connection error: %s.', $this->connection->connect_error));
+            }
         }
 
         return $this->connection;
@@ -77,6 +77,9 @@ class Manager
      */
     public function closeConnection()
     {
-        $this->connection = null;
+        if (null !== $this->connection) {
+            $this->connection->close();
+            $this->connection = null;
+        }
     }
 }
