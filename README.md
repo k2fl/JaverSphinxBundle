@@ -22,7 +22,7 @@ Installation
 
 Install the bundle using composer:
 ```sh
-composer require javer/sphinx-bundle
+composer require k2fl/sphinx-bundle
 ```
 
 Configuration
