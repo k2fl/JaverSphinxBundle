@@ -5,6 +5,7 @@ This bundle provides integration of [Sphinx](http://sphinxsearch.com) search eng
 
 Features:
 - SphinxQL Query Builder
+- Multi query support
 - Integration with [doctrine/orm](https://packagist.org/packages/doctrine/orm) 
 - Integration with [knplabs/knp-paginator-bundle](https://packagist.org/packages/knplabs/knp-paginator-bundle)
 - Symfony Profiler toolbar section with number of executed queries and profiler page with detailed information about executed queries
@@ -14,7 +15,7 @@ Requirements
 ------------
 
 - PHP 7.1+
-- pdo_mysql php extension
+- php_mysqli php extension
 
 Installation
 ------------
