@@ -1,15 +1,15 @@
 {
-    "name": "javer/sphinx-bundle",
+    "name": "k2fl/sphinx-bundle",
     "type": "symfony-bundle",
     "description": "Provides integration of Sphinx search engine with Symfony using SphinxQL",
     "keywords": ["sphinx", "sphinxql", "search", "symfony", "symfony2", "doctrine2"],
-    "homepage": "https://github.com/javer",
+    "homepage": "https://github.com/k2fl/JaverSphinxBundle",
     "license": "MIT",
     "authors": [
         {
-            "name": "Vadim Borodavko",
-            "email": "vadim.borodavko@gmail.com",
-            "homepage": "https://github.com/javer"
+            "name": "Eugene Kolokoljnikov",
+            "email": "k2fl@gmail.com",
+            "homepage": "https://github.com/k2fl"
         }
     ],
     "require": {
@@ -26,7 +26,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Javer\\SphinxBundle\\": ""
+            "k2fl\\JaverSphinxBundle\\": ""
         }
     },
     "extra": {
