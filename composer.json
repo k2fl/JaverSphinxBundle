@@ -10,6 +10,11 @@
             "name": "Eugene Kolokoljnikov",
             "email": "k2fl@gmail.com",
             "homepage": "https://github.com/k2fl"
+        },
+        {
+            "name": "Vadim Borodavko",
+            "email": "vadim.borodavko@gmail.com",
+            "homepage": "https://github.com/javer"
         }
     ],
     "require": {
