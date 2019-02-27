@@ -617,7 +617,7 @@ class Query
         $this->numRows = 0;
 
         if (!$this->connection->multi_query($this->getQuery())) {
-            throw new \RuntimeException(sprintf('SphinxQL error: %s.', $this->connetion->error));
+            throw new \RuntimeException(sprintf('SphinxQL error: %s.', $this->connection->error));
         }
 
         do {
