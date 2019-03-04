@@ -121,7 +121,7 @@
                     <td class="nowrap">{{ '%0.2f'|format(query.time * 1000) }} ms</td>
                     <td class="nowrap">{{ query.rows }}</td>
                     <td>
-                        {{ query.sql }}
+                        {{ query.sql|sphinx_pretty_query }}
                     </td>
                 </tr>
             {% endfor %}

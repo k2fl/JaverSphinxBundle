@@ -63,3 +63,8 @@ services:
         arguments:
             - "@sphinx"
             - "@?database_connection"
+
+    sphinx.twig.pretty_query.extension:
+        class: 'Javer\SphinxBundle\Twig\PrettyQueryExtension'
+        tags:
+            - { name: 'twig.extension' }
